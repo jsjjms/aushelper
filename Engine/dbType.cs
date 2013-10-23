@@ -20,4 +20,18 @@ namespace Robot.Engine
         public string sender;
         public byte attr;          //public : 1, private: 2
     }
+
+    /// <summary>
+    /// 每一条feed对应的具体内容
+    /// </summary>
+    public class Feed
+    {
+        public string url;
+        public string title;
+        public string keyword;
+        public string description;
+        public string pubDate;
+        public string category;
+        public string content;
+    }
 }

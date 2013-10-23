@@ -15,6 +15,9 @@ using Robot.i;
 using Robot.Finance;
 using Robot.Fuel;
 using System.Text.RegularExpressions;
+using Robot.RSS;
+using Robot.Engine;
+
 namespace CommonService
 {
     /// <summary>
@@ -23,10 +26,22 @@ namespace CommonService
     public class MessageService
     {
         private ToFile toFile;
-
+        /// <summary>
+        /// 用户在微信里的User ID
+        /// </summary>
         string userId = "";
+        /// <summary>
+        /// 用户发送过来的消息
+        /// </summary>
         string msg = "";
+        /// <summary>
+        /// 被分解后的关键词
+        /// </summary>
         private List<string> Parameters;
+        /// <summary>
+        /// 是否已经被分词
+        /// </summary>
+        private bool bAnalytised = false;
         /// <summary>
         /// Valid check
         /// </summary>
@@ -82,6 +97,7 @@ namespace CommonService
         /// </summary>
         private void InitParameters()
         {
+            Parameters.Clear();
             //add 14/10/2013 系统需要过滤所有标点符号
             string pattern = @"[,.;:'!【】{}\[\]]";
             msg = Regex.Replace(msg, pattern, " ");
@@ -185,12 +201,50 @@ namespace CommonService
                     FuelPrice price = new FuelPrice(Parameters);
                     sb.Append(price.GetPrice());
                     break;
+                case CTYPE.C_RSS:
+                    RSS rss = new RSS(Parameters);
+                    sb.Append(rss.GetSummary());
+                    break;
+                case CTYPE.C_TEST:
+                    sb.Append("<a href='www.google.com'>more</a>");
+                    break;
+                //小黄鸡功能
                 default:
-                    sb.Append("亲爱的用户，你所输入的内容我们尚未能识别，如果您对该部分内容感兴趣，可以发送 【建议  您的建议内容，您的联系方式】给我们，我们的开发人员会尽力为您开发该功能。请发送 【help】查询我们已经开发好的功能。（发送时请不要带大括号）");
+                    if (bAnalytised)
+                    {
+                        sb.Append("亲爱的用户，你所输入的内容我们尚未能识别，如果您对该部分内容感兴趣，可以发送 【建议  您的建议内容，您的联系方式】给我们，我们的开发人员会尽力为您开发该功能。请发送 【help】查询我们已经开发好的功能。（发送时请不要带大括号）");
+                    }
+                    else
+                    {
+                        sb.Append(reUnion(msg));
+                    }
+                    //robot_yc yc = new robot_yc();
+                    //sb.Append(yc.getResponse(msg));
                     break;
             }
             return sb.ToString();
         }
+        /// <summary>
+        /// 将句子分解，然后重新组合
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        private string reUnion(string data)
+        {
+            bAnalytised = true;
+            string sb = "";
+            ChineseAnalytics chinese = new ChineseAnalytics(data);
+            
+            List<string> items = chinese.Parser();
+            if (items.Count > 0)
+            {
+                msg = items[0] + " " + data.Substring(data.IndexOf(items[0])+items[0].Length);
+                InitParameters();
+                sb = MsgCenterHandler();
+            }
+            return sb;
+        }
+
         /// <summary>
         /// Basically handler all sub, and unsub events
         /// </summary>

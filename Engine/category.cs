@@ -8,57 +8,59 @@ namespace CommonService.Engine
     public enum CTYPE
     {
         C_SEARCH = 0,               //search
-        C_WEATHER,              //weather
-        C_MAP,                  //map
-        C_DELIVERY_START = 100,
-        C_DELIVERY = 100,             //delivery  -- default is give to happylink
-        C_DELIVERY_AAE = 101,
-        C_DELIVERY_ST = 102,
-        C_DELIVERY_EMS = 103,
-        C_DELIVERY_SF = 104,
-        C_DELIVERY_YT = 105,
-        C_DELIVERY_ZT = 106,
-        C_DELIVERY_GHX = 107,
-        C_DELIVERY_TT = 108,
-        C_DELIVERY_YD = 109,
-        C_DELIVERY_HT = 110,
-        C_DELIVERY_QF = 111,
-        C_DELIVERY_CG = 112,
-        C_DELIVERY_ZJS = 113,
+        C_WEATHER = 1,              //weather
+        C_MAP = 2,                  //map
+        C_DELIVERY_START = 4,
+        C_DELIVERY = 4,             //delivery  -- default is give to happylink
+        C_DELIVERY_AAE = 5,
+        C_DELIVERY_ST = 6,
+        C_DELIVERY_EMS = 7,
+        C_DELIVERY_SF = 8,
+        C_DELIVERY_YT = 9,
+        C_DELIVERY_ZT = 10,
+        C_DELIVERY_GHX = 11,
+        C_DELIVERY_TT = 12,
+        C_DELIVERY_YD = 13,
+        C_DELIVERY_HT = 14,
+        C_DELIVERY_QF = 15,
+        C_DELIVERY_CG = 16,
+        C_DELIVERY_ZJS = 17,
         C_DELIVERY_END = C_DELIVERY_ZJS,
-        C_YP,                   //yellow page
-        C_TRANS,                //Translation
-        C_SAVE,                 //Save the information to system
-        C_MEM,                  //search information from db
+        C_YP = 18,                   //yellow page
+        C_TRANS = 19,                //Translation
+        C_SAVE = 20,                 //Save the information to system
+        C_MEM = 21,                  //search information from db
 
-        C_CURRENCY,             //汇率
-        C_METAL,                //贵金属
+        C_CURRENCY = 22,             //汇率
+        C_METAL = 23,                //贵金属
 
-        C_HELP,
-        C_I,                     //robot
-        C_SUGGESTION,
+        C_HELP = 24,
+        C_I = 25,                     //robot
+        C_SUGGESTION = 26,
 
-        C_XZ_START = 500,
-        C_XZ_BY,
-        C_XZ_JN,
-        C_XZ_SZ,
-        C_XZ_JX,
-        C_XZ_SZ_LION,
-        C_XZ_CN,
-        C_XZ_TP,
-        C_XZ_TX,
-        C_XZ_SS,
-        C_XZ_MX,
-        C_XZ_SP,
-        C_XZ_SY,
-        C_XZ_XZ,
+        C_XZ_START = 27,
+        C_XZ_BY = 27,
+        C_XZ_JN = 28,
+        C_XZ_SZ = 29,
+        C_XZ_JX = 30,
+        C_XZ_SZ_LION = 31,
+        C_XZ_CN = 32,
+        C_XZ_TP = 33,
+        C_XZ_TX = 34,
+        C_XZ_SS = 35,
+        C_XZ_MX = 36,
+        C_XZ_SP = 37,
+        C_XZ_SY = 38,
+        C_XZ_XZ = 39,
         C_XZ_END = C_XZ_XZ,
 
-        C_FUEL_PRICE,
+        C_FUEL_PRICE = 40,
 
-        C_REPEAT
+        C_REPEAT = 41,
+        C_RSS = 42,
+        C_TEST = 43
     }
-
+        
     struct category_data
     {
         /// <summary>
@@ -112,6 +114,7 @@ namespace CommonService.Engine
             //mem
             new category_data(100, "save", CTYPE.C_SAVE),
             new category_data(101, "sa", CTYPE.C_SAVE),
+
             new category_data(102, "mem", CTYPE.C_MEM),
             new category_data(103, "search", CTYPE.C_MEM),
 
@@ -124,7 +127,7 @@ namespace CommonService.Engine
             new category_data(300, "kx", CTYPE.C_DELIVERY),
             new category_data(301, "kxkd", CTYPE.C_DELIVERY),
             new category_data(302, "happylink", CTYPE.C_DELIVERY),
-            new category_data(303, "hl", CTYPE.C_DELIVERY),
+            //new category_data(303, "hl", CTYPE.C_DELIVERY),
             //贵金属
             new category_data(310, "贵金属", CTYPE.C_METAL),
             new category_data(311, "gjs", CTYPE.C_METAL),
@@ -207,7 +210,10 @@ namespace CommonService.Engine
             //help
             new category_data(9999, "help", CTYPE.C_HELP),
             new category_data(10000, "?", CTYPE.C_REPEAT),
-            new category_data(10001, "？", CTYPE.C_REPEAT)
+            new category_data(10001, "？", CTYPE.C_REPEAT),
+
+            new category_data(10002, "rss", CTYPE.C_RSS),
+            new category_data(10003, "test1", CTYPE.C_TEST)
 
         };
 

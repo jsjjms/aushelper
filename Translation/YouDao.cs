@@ -59,6 +59,7 @@ namespace CommonService.Translation
                     {
                         sb.Append("翻译结果: \r\n");
                         sb.Append(node.InnerText + " \r\n");
+                        sb.Append("请点击<a href='http://wap.iciba.com/cword/" + (transTxt) + "'>这里</a>查看iciba的翻译结果");
                         break;
                     }
                     break;

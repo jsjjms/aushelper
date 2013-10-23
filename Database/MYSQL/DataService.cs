@@ -21,6 +21,56 @@ namespace Robot.Database
             tofile = new ToFile();
         }
         /// <summary>
+        /// 根据关键字查找Feed
+        /// </summary>
+        /// <param name="keyword"></param>
+        /// <returns></returns>
+        public Feed GetFeed(string keyword)
+        {
+            int key = 0;
+            Feed SiteFeed = new Feed();
+            SiteFeed.url = "";
+            string connStr = sql.GetSQL(sql.SQL.S_CONNECTION_STR);
+            MySqlConnection conn = new MySqlConnection(connStr);
+            MySqlCommand cmd = new MySqlCommand(String.Format(sql.GetSQL(sql.SQL.S_GET_RSS_SRC), keyword));
+            try
+            {
+                conn.Open();
+                cmd.Connection = conn;
+                cmd.CommandType = CommandType.Text;
+                MySqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    key = reader.IsDBNull(0) ? 0 : reader.GetInt32(0);
+                    SiteFeed.url = reader.IsDBNull(1) ? "" : reader.GetString(1);
+                    SiteFeed.keyword = reader.IsDBNull(3) ? "" : reader.GetString(3);
+                    SiteFeed.description = reader.IsDBNull(7) ? "" : reader.GetString(7);
+                    SiteFeed.title = reader.IsDBNull(6) ? "" : reader.GetString(6);
+                }
+                reader.Close();
+                //访问一次points值+1
+                if (key != 0)
+                {
+                    sql.SQL type = sql.SQL.S_ADD_NEW_COUNT;
+                    cmd = new MySqlCommand(String.Format(sql.GetSQL(type), key));
+                    GeneralNonSelectQuery(cmd);
+                }
+
+                cmd.Dispose();
+                conn.Close();
+                conn.Dispose();
+            }
+            catch (Exception ex)
+            {
+                cmd.Dispose();
+                conn.Close();
+                conn.Dispose();
+            }
+            
+            return SiteFeed;
+        }
+
+        /// <summary>
         /// 获取汇率数据
         /// </summary>
         /// <param name="CountryCode"></param>
